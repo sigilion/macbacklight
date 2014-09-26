@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BLPATH		"/sys/class/leds/smc::kbd_backlight"
+#define BLPATH		"/sys/class/backlight/gmux_backlight"
 #define BLVALFILE	BLPATH "/brightness"
 #define BLMAXFILE	BLPATH "/max_brightness"
 
 void usage() {
-    printf("Usage: kbdlight [up|down|off|max|get|set <value>]\n");
+    printf("Usage: macbacklight [up|down|off|max|get|set <value>]\n");
     exit(0);
 }
 
@@ -30,13 +30,13 @@ int main(int argc, char* argv[]) {
     fscanf(file, "%d", &maxval);
     fclose(file);
   } else {
-    maxval = 255;
+    maxval = 1023;
   }
 
   if (!strcmp(argv[1], "up"))
-    next = current >= maxval-16 ? maxval : current + 16;
+    next = current >= maxval-64 ? maxval : current + 64;
   else if (!strcmp(argv[1], "down"))
-    next = current <= 16 ? 0 : current - 16;
+    next = current <= 64 ? 0 : current - 64;
   else if (!strcmp(argv[1], "off"))
     next = 0;
   else if (!strcmp(argv[1], "max"))
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
     fprintf(file, "%d", next);
     fclose(file);
   } else {
-    perror("failed to write to the keyboard backlight file: " BLVALFILE);
+    perror("failed to write to the screen backlight file: " BLVALFILE);
   }
   return 0;
 }

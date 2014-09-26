@@ -1,7 +1,7 @@
 PREFIX = /usr/local
 
-obj = kbdlight.o
-bin = kbdlight
+obj = macbacklight.o
+bin = macbacklight
 
 $(bin): $(obj)
 	$(CC) -o $@ $(obj) $(LDFLAGS)
